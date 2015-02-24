@@ -1,8 +1,11 @@
 {
   "paths": {
-    "FREEJs": "./src/*.js",
-    "depKs": ["./legacyDeps/promisejs/promise.min.js"],
+    "src": ["./src/*.js"],
+    "srcFile": "free.js",
     "appRoot": "app",
-    "dist": "./dist"
+    "appJs": "./app/js",
+    "dist": "./dist",
+    "allDist": "./dist/**/*.*",
+    "clean": ["./dist/**/*.*", "./app/js/**/*.*"]
   }
 }

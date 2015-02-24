@@ -2,78 +2,64 @@
 HEADER STUFF HERE
 */
 
-window.FREE = (function(my, ajax) {
+window.FREE = (function(my) {
   'use strict';
 
-  if (ajax == null) {
-    throw new Error('promisejs is undefined or null');
-  }
-
-  var settings = {
-    url: null,
-    data: null
-  };
-
-  var _currentBattery = null,
-      _currentTest = null;
-
-  my.beginBattery = beginBattery;
-  my.endBattery = endBattery;
-  my.beginTest = beginTest;
-  my.endTest = endTest;
-  my.markCurrentTest = markCurrentTest;
-  my.sendResults = sendResults;
-
-  function beginBattery(batteryName, url, data) {
-    _currentBattery = new Battery(batteryName);
-
-    settings.url = url;
-    settings.data = data;
-  }
-  function endBattery() {
-    _currentBattery.complete();
-
-    sendResults(settings.url);
-  }
-
-  function beginTest(testName) {
-    if (my.results[testName] != null) {
-      throw new Error('Test of name ' + testName + ' has already been used');
-    }
-
-    _currentTest = batteryResults.results[testName] = new Test(testName);
-  }
-  function endTest() {
-    markCurrentTest();
-    _currentTest.complete();
-    _currentTest = null;
-  }
-
-  function markCurrentTest() {
-    _currentTest.addMark();
-  }
-
-  function sendResults(url) {
-    throw new Error('sendResults not yet implemented');
-  }
+  my.Battery = Battery;
 
   function Battery(name) {
     this.name = name;
-    this.tests = [];
+
+    this.tests = {};
+    this.currentTest = null;
+
     this.start = new Date();
     this.end = null;
 
-    this.completed: false;
+    this.completed = false;
   }
 
   Battery.prototype.complete = complete;
   function complete() {
+    if (this.currentTest) {
+      this.endTest();
+    }
+
     this.completed = true;
     this.end = new Date();
   }
 
+  Battery.prototype.beginTest = beginTest;
+  function beginTest(testName) {
+    if (this.tests[testName] != null) {
+      throw new Error('Test of name ' + testName + ' has already been used');
+    }
+
+    var test = new Test(testName);
+    this.tests[testName] = test;
+    this.currentTest = test;
+
+    return test;
+  }
+
+  Battery.prototype.endTest = endTest;
+  function endTest() {
+    this.markCurrentTest();
+    this.currentTest.complete();
+    this.currentTest = null;
+  }
+
+  Battery.prototype.markCurrentTest = markCurrentTest;
+  function markCurrentTest() {
+    this.currentTest.addMark();
+  }
+
   function Test(name) {
     this.name = name;
+
+    this.start = new Date();
+    this.lastMarkTime = this.start;
+
     this.marks = [];
 
     this.completed = false;
@@ -81,7 +67,9 @@ window.FREE = (function(my, ajax) {
 
   Test.prototype.addMark = addMark;
   function addMark() {
-    this.marks.push(new Mark());
+    var mark = new Mark(this.lastMarkTime);
+    this.lastMarkTime = mark.time;
+    this.marks.push(mark);
   }
 
   Test.prototype.complete = completeTest;
@@ -89,9 +77,10 @@ window.FREE = (function(my, ajax) {
     this.completed = true;
   }
 
-  function Mark() {
+  function Mark(time) {
     this.time = new Date();
+    this.delta = (+(this.time)) - (+(time));
   }
 
   return my;
-})(window.FREE || {}, promise)
+})(window.FREE || {});
