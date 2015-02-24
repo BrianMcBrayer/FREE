@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/BrianMcBrayer/FREE/issues"
   },
-  "homepage": "https://github.com/BrianMcBrayer/FREE"
+  "homepage": "https://github.com/BrianMcBrayer/FREE",
+  "devDependencies": {
+    "gulp": "^3.8.11"
+  }
 }
