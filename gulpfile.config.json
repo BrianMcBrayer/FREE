@@ -1,0 +1,8 @@
+{
+  "paths": {
+    "FREEJs": "./src/*.js",
+    "depKs": ["./legacyDeps/promisejs/promise.min.js"],
+    "appRoot": "app",
+    "dist": "./dist"
+  }
+}
