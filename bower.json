@@ -1,12 +1,12 @@
 {
   "name": "FREE",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/BrianMcBrayer/FREE",
   "authors": [
     "BrianMcBrayer <brandmcbrayer@live.com>"
   ],
   "description": "Framework for Recording Everything Else",
-  "main": "index.js",
+  "main": ["./src/free.js", "./dist/free.min.js", "./dist/free.min.js.map"],
   "license": "MIT",
   "ignore": [
     "**/.*",
