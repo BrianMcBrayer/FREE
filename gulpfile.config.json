@@ -1,0 +1,11 @@
+{
+  "paths": {
+    "src": ["./src/*.js"],
+    "srcFile": "free.js",
+    "appRoot": "app",
+    "appJs": "./app/js",
+    "dist": "./dist",
+    "allDist": "./dist/**/*.*",
+    "clean": ["./dist/**/*.*", "./app/js/**/*.*"]
+  }
+}
